@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+static char *font = "monospace:pixelsize=24:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -72,57 +72,47 @@ char *termname = "st-256color";
  * the st.info and appropriately install the st.info in the environment where
  * you use this st version.
  *
- *	it#$tabspaces,
+ *      it#$tabspaces,
  *
  * Secondly make sure your kernel is not expanding tabs. When running `stty
  * -a` »tab0« should appear. You can tell the terminal to not expand tabs by
  *  running following command:
  *
- *	stty tabs
+ *      stty tabs
  */
 unsigned int tabspaces = 8;
 
-float alpha = 0.8;
+/* bg opacity */
+float alpha = 0.95;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-	/* 8 normal colors */
-	"black",
-	"red3",
-	"green3",
-	"yellow3",
-	"blue2",
-	"magenta3",
-	"cyan3",
-	"gray90",
-
-	/* 8 bright colors */
-	"gray50",
-	"red",
-	"green",
-	"yellow",
-	"#5c5cff",
-	"magenta",
-	"cyan",
-	"white",
-
-	[255] = 0,
-
-	/* more colors can be added after 255 to use with DefaultXX */
-	"#cccccc",
-	"#555555",
-	"black",
+	"#1d1f21",
+	"#cc6666",
+	"#b5bd68",
+	"#f0c674",
+	"#81a2be",
+	"#b294bb",
+	"#8abeb7",
+	"#c5c8c6",
+	"#969896",
+	"#cc6666",
+	"#b5bd68",
+	"#f0c674",
+	"#81a2be",
+	"#b294bb",
+	"#8abeb7",
+	"#ffffff"
 };
-
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 7;
-unsigned int defaultbg = 258;
-static unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 257;
+unsigned int defaultfg = 252;
+unsigned int defaultbg = 234;
+static unsigned int defaultcs = 13;
+static unsigned int defaultrcs = 0;
 
 /*
  * Default shape of cursor
@@ -158,31 +148,57 @@ static unsigned int defaultattr = 11;
  * Beware that overloading Button1 will disable the selection.
  */
 static MouseShortcut mshortcuts[] = {
-	/* button               mask            string */
-	{ Button4,              XK_ANY_MOD,     "\031" },
-	{ Button5,              XK_ANY_MOD,     "\005" },
+	/* button   mask        string */
+	{ Button4,  XK_ANY_MOD, "\031" },
+	{ Button5,  XK_ANY_MOD, "\005" },
 };
 
 /* Internal keyboard shortcuts. */
 #define MODKEY Mod1Mask
 #define TERMMOD (ControlMask|ShiftMask)
+#define DMODKEY (MODKEY|ShiftMask)
+
+static char *openurlcmd[] = { "/bin/sh", "-c",
+	"sed 's/.*│//g' | tr -d '\n' | grep -aEo '((http|https)://|www\\.)[a-zA-Z0-9./&?=_-]*' | uniq | sed 's/^www./http:\\/\\/www\\./g' | awk '!x[$0]++' | dmenu -l 10 | xargs -r xdg-open", "externalpipe", NULL };
+
+static char *copyurlcmd[] = { "/bin/sh", "-c",
+	"sed 's/.*│//g' | tr -d '\n' | grep -aEo '((http|https)://|www\\.)[a-zA-Z0-9./&?=_-]*' | uniq | sed 's/^www./http:\\/\\/www\\./g' | awk '!x[$0]++' | dmenu -p 'Copy which url?' -l 10 | tr -d '\n' | xclip -selection clipboard", "externalpipe", NULL };
 
 static Shortcut shortcuts[] = {
-	/* mask                 keysym          function        argument */
-	{ XK_ANY_MOD,           XK_Break,       sendbreak,      {.i =  0} },
-	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
-	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
-	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
-	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
-	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
-	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
-	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
-	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
-	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
-	{ ShiftMask,            XK_Insert,      selpaste,       {.i =  0} },
-	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
-	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
-	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	/* mask         keysym          function        argument */
+	{ XK_ANY_MOD,   XK_Break,       sendbreak,      {.i =  0} },
+	{ ControlMask,  XK_Print,       toggleprinter,  {.i =  0} },
+	{ ShiftMask,    XK_Print,       printscreen,    {.i =  0} },
+	{ XK_ANY_MOD,   XK_Print,       printsel,       {.i =  0} },
+	{ TERMMOD,      XK_Prior,       zoom,           {.f = +1} },
+	{ TERMMOD,      XK_Next,        zoom,           {.f = -1} },
+	{ TERMMOD,      XK_Home,        zoomreset,      {.f =  0} },
+	{ TERMMOD,      XK_C,           clipcopy,       {.i =  0} },
+	{ TERMMOD,      XK_V,           clippaste,      {.i =  0} },
+	{ TERMMOD,      XK_Y,           selpaste,       {.i =  0} },
+	{ ShiftMask,    XK_Insert,      selpaste,       {.i =  0} },
+	{ TERMMOD,      XK_Num_Lock,    numlock,        {.i =  0} },
+	{ ShiftMask,    XK_Page_Up,     kscrollup,      {.i = -1} },
+	{ ShiftMask,    XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ MODKEY,       XK_Page_Up,     kscrollup,      {.i = -1} },
+	{ MODKEY,       XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ MODKEY,       XK_u,           kscrollup,      {.i = -1} },
+	{ MODKEY,       XK_d,           kscrolldown,    {.i = -1} },
+	{ MODKEY,       XK_k,           kscrollup,      {.i =  1} },
+	{ MODKEY,       XK_j,           kscrolldown,    {.i =  1} },
+	{ MODKEY,       XK_Up,          kscrollup,      {.i =  1} },
+	{ MODKEY,       XK_Down,        kscrolldown,    {.i =  1} },
+	{ DMODKEY,      XK_H,           zoomreset,      {.f =  0} },
+	{ DMODKEY,      XK_Up,          zoom,           {.f = +1} },
+	{ DMODKEY,      XK_Down,        zoom,           {.f = -1} },
+	{ DMODKEY,      XK_K,           zoom,           {.f = +1} },
+	{ DMODKEY,      XK_J,           zoom,           {.f = -1} },
+	{ MODKEY,       XK_plus,        zoom,           {.f = +1} },
+	{ MODKEY,       XK_minus,       zoom,           {.f = -1} },
+	{ DMODKEY,      XK_U,           zoom,           {.f = +2} },
+	{ DMODKEY,      XK_D,           zoom,           {.f = -2} },
+	{ MODKEY,       XK_l,           externalpipe,   { .v = openurlcmd } },
+	{ MODKEY,       XK_y,           externalpipe,   { .v = copyurlcmd } },
 };
 
 /*

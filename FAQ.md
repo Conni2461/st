@@ -27,13 +27,13 @@ st or st-256color. The default value for TERM can be changed in config.h.
 
 Taken from the terminfo manpage:
 
-        If the terminal has a keypad that transmits codes when the keys
-        are pressed, this information can be given. Note that it is not
-        possible to handle terminals where the keypad only works in
-        local (this applies, for example, to the unshifted HP 2621 keys).
-        If the keypad can be set to transmit or not transmit, give these
-        codes as smkx and rmkx. Otherwise the keypad is assumed to
-        always transmit.
+	If the terminal has a keypad that transmits codes when the keys
+	are pressed, this information can be given. Note that it is not
+	possible to handle terminals where the keypad only works in
+	local (this applies, for example, to the unshifted HP 2621 keys).
+	If the keypad can be set to transmit or not transmit, give these
+	codes as smkx and rmkx. Otherwise the keypad is assumed to
+	always transmit.
 
 In the st case smkx=E[?1hE= and rmkx=E[?1lE>, so it is mandatory that
 applications which want to test against keypad keys send these
@@ -42,39 +42,39 @@ sequences.
 But buggy applications (like bash and irssi, for example) don't do this. A fast
 solution for them is to use the following command:
 
-        $ printf '\033[?1h\033=' >/dev/tty
+	$ printf '\033[?1h\033=' >/dev/tty
 
 or
 
-        $ tput smkx
+	$ tput smkx
 
 In the case of bash, readline is used. Readline has a different note in its
 manpage about this issue:
 
-        enable-keypad (Off)
-                When set to On, readline will try to enable the
-                application keypad when it is called. Some systems
-                need this to enable arrow keys.
+	enable-keypad (Off)
+		When set to On, readline will try to enable the
+		application keypad when it is called. Some systems
+		need this to enable arrow keys.
 
 Adding this option to your .inputrc will fix the keypad problem for all
 applications using readline.
 
 If you are using zsh, then read the zsh [FAQ](http://zsh.sourceforge.net/FAQ/zshfaq03.html#l25):
 
-        It should be noted that the O / [ confusion can occur with other keys
-        such as Home and End. Some systems let you query the key sequences
-        sent by these keys from the system's terminal database, terminfo.
-        Unfortunately, the key sequences given there typically apply to the
-        mode that is not the one zsh uses by default (it's the "application"
-        mode rather than the "raw" mode). Explaining the use of terminfo is
-        outside of the scope of this FAQ, but if you wish to use the key
-        sequences given there you can tell the line editor to turn on
-        "application" mode when it starts and turn it off when it stops:
+	It should be noted that the O / [ confusion can occur with other keys
+	such as Home and End. Some systems let you query the key sequences
+	sent by these keys from the system's terminal database, terminfo.
+	Unfortunately, the key sequences given there typically apply to the
+	mode that is not the one zsh uses by default (it's the "application"
+	mode rather than the "raw" mode). Explaining the use of terminfo is
+	outside of the scope of this FAQ, but if you wish to use the key
+	sequences given there you can tell the line editor to turn on
+	"application" mode when it starts and turn it off when it stops:
 
-                function zle-line-init () { echoti smkx }
-                function zle-line-finish () { echoti rmkx }
-                zle -N zle-line-init
-                zle -N zle-line-finish
+		function zle-line-init () { echoti smkx }
+		function zle-line-finish () { echoti rmkx }
+		zle -N zle-line-init
+		zle -N zle-line-finish
 
 Putting these lines into your .zshrc will fix the problems.
 
@@ -100,57 +100,57 @@ This is an issue that was discussed in suckless mailing [list](http://lists.suck
 Here is why some old grumpy
 terminal users wants its backspace to be how he feels it:
 
-        Well, I am going to comment why I want to change the behaviour
-        of this key. When ASCII was defined in 1968, communication
-        with computers was done using punched cards, or hardcopy
-        terminals (basically a typewriter machine connected with the
-        computer using a serial port).  ASCII defines DELETE as 7F,
-        because, in punched-card terms, it means all the holes of the
-        card punched; it is thus a kind of 'physical delete'. In the
-        same way, the BACKSPACE key was a non-destructive backspace,
-        as on a typewriter.  So, if you wanted to delete a character,
-        you had to BACKSPACE and then DELETE.  Another use of BACKSPACE
-        was to type accented characters, for example 'a BACKSPACE `'.
-        The VT100 had no BACKSPACE key; it was generated using the
-        CONTROL key as another control character (CONTROL key sets to
-        0 b7 b6 b5, so it converts H (code 0x48) into BACKSPACE (code
-        0x08)), but it had a DELETE key in a similar position where
-        the BACKSPACE key is located today on common PC keyboards.
-        All the terminal emulators emulated the difference between
-        these keys correctly: the backspace key generated a BACKSPACE
-        (^H) and delete key generated a DELETE (^?).
+	Well, I am going to comment why I want to change the behaviour
+	of this key. When ASCII was defined in 1968, communication
+	with computers was done using punched cards, or hardcopy
+	terminals (basically a typewriter machine connected with the
+	computer using a serial port).	ASCII defines DELETE as 7F,
+	because, in punched-card terms, it means all the holes of the
+	card punched; it is thus a kind of 'physical delete'. In the
+	same way, the BACKSPACE key was a non-destructive backspace,
+	as on a typewriter.  So, if you wanted to delete a character,
+	you had to BACKSPACE and then DELETE.  Another use of BACKSPACE
+	was to type accented characters, for example 'a BACKSPACE `'.
+	The VT100 had no BACKSPACE key; it was generated using the
+	CONTROL key as another control character (CONTROL key sets to
+	0 b7 b6 b5, so it converts H (code 0x48) into BACKSPACE (code
+	0x08)), but it had a DELETE key in a similar position where
+	the BACKSPACE key is located today on common PC keyboards.
+	All the terminal emulators emulated the difference between
+	these keys correctly: the backspace key generated a BACKSPACE
+	(^H) and delete key generated a DELETE (^?).
 
-        But a problem arose when Linus Torvalds wrote Linux. Unlike
-        earlier terminals, the Linux virtual terminal (the terminal
-        emulator integrated in the kernel) returned a DELETE when
-        backspace was pressed, due to the VT100 having a DELETE key in
-        the same position.  This created a lot of problems (see [1]
-        and [2]). Since Linux has become the king, a lot of terminal
-        emulators today generate a DELETE when the backspace key is
-        pressed in order to avoid problems with Linux. The result is
-        that the only way of generating a BACKSPACE on these systems
-        is by using CONTROL + H. (I also think that emacs had an
-        important point here because the CONTROL + H prefix is used
-        in emacs in some commands (help commands).)
+	But a problem arose when Linus Torvalds wrote Linux. Unlike
+	earlier terminals, the Linux virtual terminal (the terminal
+	emulator integrated in the kernel) returned a DELETE when
+	backspace was pressed, due to the VT100 having a DELETE key in
+	the same position.	This created a lot of problems (see [1]
+	and [2]). Since Linux has become the king, a lot of terminal
+	emulators today generate a DELETE when the backspace key is
+	pressed in order to avoid problems with Linux. The result is
+	that the only way of generating a BACKSPACE on these systems
+	is by using CONTROL + H. (I also think that emacs had an
+	important point here because the CONTROL + H prefix is used
+	in emacs in some commands (help commands).)
 
-        From point of view of the kernel, you can change the key
-        for deleting a previous character with stty erase. When you
-        connect a real terminal into a machine you describe the type
-        of terminal, so getty configures the correct value of stty
-        erase for this terminal. In the case of terminal emulators,
-        however, you don't have any getty that can set the correct
-        value of stty erase, so you always get the default value.
-        For this reason, it is necessary to add 'stty erase ^H' to your
-        profile if you have changed the value of the backspace key.
-        Of course, another solution is for st itself to modify the
-        value of stty erase.  I usually have the inverse problem:
-        when I connect to non-Unix machines, I have to press CONTROL +
-        h to get a BACKSPACE. The inverse problem occurs when a user
-        connects to my Unix machines from a different system with a
-        correct backspace key.
+	From point of view of the kernel, you can change the key
+	for deleting a previous character with stty erase. When you
+	connect a real terminal into a machine you describe the type
+	of terminal, so getty configures the correct value of stty
+	erase for this terminal. In the case of terminal emulators,
+	however, you don't have any getty that can set the correct
+	value of stty erase, so you always get the default value.
+	For this reason, it is necessary to add 'stty erase ^H' to your
+	profile if you have changed the value of the backspace key.
+	Of course, another solution is for st itself to modify the
+	value of stty erase.  I usually have the inverse problem:
+	when I connect to non-Unix machines, I have to press CONTROL +
+	h to get a BACKSPACE. The inverse problem occurs when a user
+	connects to my Unix machines from a different system with a
+	correct backspace key.
 
-        [1] http://www.ibb.net/~anne/keyboard.html
-        [2] http://www.tldp.org/HOWTO/Keyboard-and-Console-HOWTO-5.html
+	[1] http://www.ibb.net/~anne/keyboard.html
+	[2] http://www.tldp.org/HOWTO/Keyboard-and-Console-HOWTO-5.html
 
 ## But I really want the old grumpy behaviour of my terminal
 
