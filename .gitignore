@@ -2,3 +2,6 @@ st
 *.o
 *.orig
 *.rej
+tags
+
+.ccls-cache/
