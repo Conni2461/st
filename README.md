@@ -63,6 +63,7 @@ All shortcuts can be found in the manpage.
 ## Applied Patches
 
 - [Alpha](https://st.suckless.org/patches/alpha/st-alpha-0.8.2.diff): Change the opacity in the config.h file to match your preferences.
+- [Anysize](https://st.suckless.org/patches/anysize/st-anysize-0.8.1.diff): Patch, will remove unsightly gaps between windows
 - [Hidecursor](https://st.suckless.org/patches/hidecursor/st-hidecursor-0.8.1.diff): Hides the mousecursor as soon as you start typing.
 - [externalpipe](https://st.suckless.org/patches/externalpipe/st-externalpipe-20181016-3be4cf1.diff): Allows you to pipe the terminalscreen to an external command.
 - [Spoiler](https://st.suckless.org/patches/spoiler/st-spoiler-20180309-c5ba9c0.diff): Use inverted defaultbg/fg for selection when bg/fg are the same.
