@@ -68,3 +68,4 @@ All shortcuts can be found in the manpage.
 - [externalpipe](https://st.suckless.org/patches/externalpipe/st-externalpipe-20181016-3be4cf1.diff): Allows you to pipe the terminalscreen to an external command.
 - [Spoiler](https://st.suckless.org/patches/spoiler/st-spoiler-20180309-c5ba9c0.diff): Use inverted defaultbg/fg for selection when bg/fg are the same.
 - [Scrollback](https://st.suckless.org/patches/scrollback/st-scrollback-20190331-21367a0.diff): Allows you to scrollback in history. No mouse support.
+- [newterm](https://st.suckless.org/patches/newterm/st-newterm-0.8.2.diff): New terminal in current directory
