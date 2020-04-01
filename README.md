@@ -1,6 +1,6 @@
 # st fork - simple terminal
 
-[st](st.suckless.org) is a simple terminal emulator for X which sucks less.
+[st](https://st.suckless.org) is a simple terminal emulator for X which sucks less.
 
 ## Requirements
 
