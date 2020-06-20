@@ -109,13 +109,8 @@ included in libc on this platform.
 St is emulating the Linux way of handling backspace being delete and delete being
 backspace.
 
-<<<<<<< HEAD:FAQ.md
-This is an issue that was discussed in suckless mailing [list](http://lists.suckless.org/dev/1404/20697.html>).
-Here is why some old grumpy
-=======
 This is an issue that was discussed in suckless mailing list
 <https://lists.suckless.org/dev/1404/20697.html>. Here is why some old grumpy
->>>>>>> fa253f077f19b3220c7655b81bd91e52f4367803:FAQ
 terminal users wants its backspace to be how he feels it:
 
 	Well, I am going to comment why I want to change the behaviour
@@ -190,6 +185,7 @@ short flicker effect.
 Below is a patch example to change st double-buffering to a single Drawable
 buffer.
 
+``` diff
 diff --git a/x.c b/x.c
 --- a/x.c
 +++ b/x.c
@@ -223,6 +219,7 @@ diff --git a/x.c b/x.c
  	XSetForeground(xw.dpy, dc.gc,
  			dc.col[IS_SET(MODE_REVERSE)?
  				defaultfg : defaultbg].pixel);
+```
 
 
 ## BadLength X error in Xft when trying to render emoji
