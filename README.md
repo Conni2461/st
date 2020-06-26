@@ -69,3 +69,4 @@ All shortcuts can be found in the manpage.
 - [Spoiler](https://st.suckless.org/patches/spoiler/st-spoiler-20180309-c5ba9c0.diff): Use inverted defaultbg/fg for selection when bg/fg are the same.
 - [Scrollback](https://st.suckless.org/patches/scrollback/st-scrollback-20190331-21367a0.diff): Allows you to scrollback in history. No mouse support.
 - [newterm](https://st.suckless.org/patches/newterm/st-newterm-0.8.2.diff): New terminal in current directory
+- [font2](https://st.suckless.org/patches/font2/st-font2-20190416-ba72400.diff): Adds field for spare fonts
