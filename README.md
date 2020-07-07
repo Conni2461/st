@@ -70,3 +70,4 @@ All shortcuts can be found in the manpage.
 - [Scrollback](https://st.suckless.org/patches/scrollback/st-scrollback-20190331-21367a0.diff): Allows you to scrollback in history. No mouse support.
 - [newterm](https://st.suckless.org/patches/newterm/st-newterm-0.8.2.diff): New terminal in current directory
 - [font2](https://st.suckless.org/patches/font2/st-font2-20190416-ba72400.diff): Adds field for spare fonts
+- [boxdraw](https://st.suckless.org/patches/boxdraw/st-boxdraw_v2-0.8.3.diff): Custom rendering of lines/blocks/braille characters for gapless alignment
