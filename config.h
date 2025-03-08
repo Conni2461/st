@@ -97,35 +97,63 @@ char *termname = "st-256color";
  */
 unsigned int tabspaces = 8;
 
-/* Terminal colors (16 first used in escape sequence) */
-static const char *colorname[] = {
-	"#1d1f21",
-	"#cc6666",
-	"#b5bd68",
-	"#f0c674",
-	"#81a2be",
-	"#b294bb",
-	"#8abeb7",
-	"#c5c8c6",
-	"#969896",
-	"#cc6666",
-	"#b5bd68",
-	"#f0c674",
-	"#81a2be",
-	"#b294bb",
-	"#8abeb7",
-	"#ffffff"
-};
+typedef struct {
+	const char* const colors[258]; /* terminal colors */
+	unsigned int fg;               /* foreground */
+	unsigned int bg;               /* background */
+	unsigned int cs;               /* cursor */
+	unsigned int rcs;              /* reverse cursor */
+} ColorScheme;
+/*
+ * Terminal colors (16 first used in escape sequence,
+ * 2 last for custom cursor color),
+ * foreground, background, cursor, reverse cursor
+ */
+static const ColorScheme schemes[] = {
+	// base 16 tomorrow-night
+	{{"#1d1f21", "#cc6666", "#b5bd68", "#f0c674",
+	  "#81a2be", "#b294bb", "#8abeb7", "#c5c8c6",
+	  "#969896", "#cc6666", "#b5bd68", "#f0c674",
+	  "#81a2be", "#b294bb", "#8abeb7", "#ffffff",
+	  [256]="#cccccc", "#555555"}, 7, 0, 13, 0},
+	// catppuccin - latte (light)
+	{{ "#5C5F77", "#D20F39", "#40A02B", "#DF8E1D",
+	   "#1E66F5", "#EA76CB", "#179299", "#ACB0BE",
+	   "#6C6F85", "#D20F39", "#40A02B", "#DF8E1D",
+	   "#1E66F5", "#EA76CB", "#179299", "#BCC0CC",
+	  [256]="#000000", "#eaeaea"}, 256, 257, 258, 258},
+	// One Half light
+	{{"#fafafa", "#e45649", "#50a14f", "#c18401",
+	  "#0184bc", "#a626a4", "#0997b3", "#383a42",
+	  "#fafafa", "#e45649", "#50a14f", "#c18401",
+	  "#0184bc", "#a626a4", "#0997b3", "#383a42",
+	  [256]="#cccccc", "#555555"}, 7, 0, 256, 257},
+	// Solarized light
+	{{"#eee8d5", "#dc322f", "#859900", "#b58900",
+	  "#268bd2", "#d33682", "#2aa198", "#073642",
+	  "#fdf6e3", "#cb4b16", "#93a1a1", "#839496",
+	  "#657b83", "#6c71c4", "#586e75", "#002b36",
+	  [256]="#586e75", "#002b36"}, 12, 8, 256, 257},
+	// gruvbox (light)
+	{{"#fbf1c7", "#cc241d", "#98971a", "#d79921",
+	  "#458588", "#b16286", "#689d6a", "#7c6f64",
+	  "#928374", "#9d0006", "#79740e", "#b57614",
+	  "#076678", "#8f3f71", "#427b58", "#3c3836",
+	  [256]="#3c3836", "#555555"}, 15, 0, 256, 257},
+ };
+
+static const char * const * colorname;
+int colorscheme = 0;
 
 
 /*
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 7;
-unsigned int defaultbg = 0;
-unsigned int defaultcs = 13;
-static unsigned int defaultrcs = 0;
+unsigned int defaultfg;
+unsigned int defaultbg;
+unsigned int defaultcs;
+static unsigned int defaultrcs;
 
 /*
  * Default shape of cursor
@@ -223,6 +251,17 @@ static Shortcut shortcuts[] = {
 	{ DMODKEY,      XK_D,           zoom,           {.f = -2} },
 	{ MODKEY,       XK_l,           externalpipe,   { .v = openurlcmd } },
 	{ MODKEY,       XK_y,           externalpipe,   { .v = copyurlcmd } },
+	{ MODKEY,               XK_1,           selectscheme,   {.i =  0} },
+	{ MODKEY,               XK_2,           selectscheme,   {.i =  1} },
+	{ MODKEY,               XK_3,           selectscheme,   {.i =  2} },
+	{ MODKEY,               XK_4,           selectscheme,   {.i =  3} },
+	{ MODKEY,               XK_5,           selectscheme,   {.i =  4} },
+	{ MODKEY,               XK_6,           selectscheme,   {.i =  5} },
+	{ MODKEY,               XK_7,           selectscheme,   {.i =  6} },
+	{ MODKEY,               XK_8,           selectscheme,   {.i =  7} },
+	{ MODKEY,               XK_9,           selectscheme,   {.i =  8} },
+	{ MODKEY,               XK_0,           nextscheme,     {.i = +1} },
+	{ MODKEY|ControlMask,   XK_0,           nextscheme,     {.i = -1} },
 };
 
 /*

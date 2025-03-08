@@ -70,3 +70,4 @@ All shortcuts can be found in the manpage.
 - [newterm](https://st.suckless.org/patches/newterm/st-newterm-0.9.diff): New terminal in current directory
 - [font2](https://st.suckless.org/patches/font2/st-font2-0.8.5.diff): Adds field for spare fonts
 - [ligatures](https://st.suckless.org/patches/ligatures/0.9.2/st-ligatures-scrollback-ringbuffer-20240427-0.9.2.diff): This patch adds proper drawing of ligatures.
+- [colorscheme](https://st.suckless.org/patches/colorschemes/st-colorschemes-0.8.5.diff): This patch adds multiple color schemes and lets you change them without having to restart st.
