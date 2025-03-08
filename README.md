@@ -69,3 +69,4 @@ All shortcuts can be found in the manpage.
 - [anysize](https://st.suckless.org/patches/anysize/st-anysize-20220718-baa9357.diff): Patch, will remove unsightly gaps between windows
 - [newterm](https://st.suckless.org/patches/newterm/st-newterm-0.9.diff): New terminal in current directory
 - [font2](https://st.suckless.org/patches/font2/st-font2-0.8.5.diff): Adds field for spare fonts
+- [ligatures](https://st.suckless.org/patches/ligatures/0.9.2/st-ligatures-scrollback-ringbuffer-20240427-0.9.2.diff): This patch adds proper drawing of ligatures.

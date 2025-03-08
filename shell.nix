@@ -6,5 +6,6 @@ pkgs.mkShell {
     pkg-config
     xorg.libX11
     xorg.libXft
+    harfbuzz
   ];
 }
