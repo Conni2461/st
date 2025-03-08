@@ -67,3 +67,4 @@ All shortcuts can be found in the manpage.
 - [scrollback](https://st.suckless.org/patches/scrollback/st-scrollback-ringbuffer-0.9.2.diff): Allows you to scrollback in history. No mouse support.
 - [externalpipe](https://st.suckless.org/patches/externalpipe/st-externalpipe-0.8.5.diff): Allows you to pipe the terminalscreen to an external command.
 - [anysize](https://st.suckless.org/patches/anysize/st-anysize-20220718-baa9357.diff): Patch, will remove unsightly gaps between windows
+- [newterm](https://st.suckless.org/patches/newterm/st-newterm-0.9.diff): New terminal in current directory
