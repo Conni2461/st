@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
+static char *font = "monospace:style=Light,Regular:pixelsize=15:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -95,33 +95,22 @@ unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-	/* 8 normal colors */
-	"black",
-	"red3",
-	"green3",
-	"yellow3",
-	"blue2",
-	"magenta3",
-	"cyan3",
-	"gray90",
-
-	/* 8 bright colors */
-	"gray50",
-	"red",
-	"green",
-	"yellow",
-	"#5c5cff",
-	"magenta",
-	"cyan",
-	"white",
-
-	[255] = 0,
-
-	/* more colors can be added after 255 to use with DefaultXX */
-	"#cccccc",
-	"#555555",
-	"gray90", /* default foreground colour */
-	"black", /* default background colour */
+	"#1d1f21",
+	"#cc6666",
+	"#b5bd68",
+	"#f0c674",
+	"#81a2be",
+	"#b294bb",
+	"#8abeb7",
+	"#c5c8c6",
+	"#969896",
+	"#cc6666",
+	"#b5bd68",
+	"#f0c674",
+	"#81a2be",
+	"#b294bb",
+	"#8abeb7",
+	"#ffffff"
 };
 
 
@@ -129,10 +118,10 @@ static const char *colorname[] = {
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 258;
-unsigned int defaultbg = 259;
-unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 257;
+unsigned int defaultfg = 7;
+unsigned int defaultbg = 0;
+unsigned int defaultcs = 13;
+static unsigned int defaultrcs = 0;
 
 /*
  * Default shape of cursor
@@ -186,6 +175,13 @@ static MouseShortcut mshortcuts[] = {
 /* Internal keyboard shortcuts. */
 #define MODKEY Mod1Mask
 #define TERMMOD (ControlMask|ShiftMask)
+#define DMODKEY (MODKEY|ShiftMask)
+
+static char *openurlcmd[] = { "/bin/sh", "-c",
+	"sed 's/.*│//g' | tr -d '\n' | grep -aEo '((http|https)://|www\\.)[a-zA-Z0-9./&?=:~#%_-]*' | uniq | sed 's/^www./http:\\/\\/www\\./g' | awk '!x[$0]++' | dmenu -l 10 | xargs -r xdg-open", "externalpipe", NULL };
+
+static char *copyurlcmd[] = { "/bin/sh", "-c",
+	"sed 's/.*│//g' | tr -d '\n' | grep -aEo '((http|https)://|www\\.)[a-zA-Z0-9./&?=:~#%_-]*' | uniq | sed 's/^www./http:\\/\\/www\\./g' | awk '!x[$0]++' | dmenu -p 'Copy which url?' -l 10 | tr -d '\n' | xclip -selection clipboard", "externalpipe", NULL };
 
 static Shortcut shortcuts[] = {
 	/* mask                 keysym          function        argument */
@@ -203,6 +199,25 @@ static Shortcut shortcuts[] = {
 	{ TERMMOD,              XK_Num_Lock,    numlock,        {.i =  0} },
 	{ ShiftMask,            XK_Page_Up,     kscrollup,      {.i = -1} },
 	{ ShiftMask,            XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ MODKEY,       XK_Page_Up,     kscrollup,      {.i = -1} },
+	{ MODKEY,       XK_Page_Down,   kscrolldown,    {.i = -1} },
+	{ MODKEY,       XK_u,           kscrollup,      {.i = -1} },
+	{ MODKEY,       XK_d,           kscrolldown,    {.i = -1} },
+	{ MODKEY,       XK_k,           kscrollup,      {.i =  1} },
+	{ MODKEY,       XK_j,           kscrolldown,    {.i =  1} },
+	{ MODKEY,       XK_Up,          kscrollup,      {.i =  1} },
+	{ MODKEY,       XK_Down,        kscrolldown,    {.i =  1} },
+	{ DMODKEY,      XK_H,           zoomreset,      {.f =  0} },
+	{ DMODKEY,      XK_Up,          zoom,           {.f = +1} },
+	{ DMODKEY,      XK_Down,        zoom,           {.f = -1} },
+	{ DMODKEY,      XK_K,           zoom,           {.f = +1} },
+	{ DMODKEY,      XK_J,           zoom,           {.f = -1} },
+	{ MODKEY,       XK_plus,        zoom,           {.f = +1} },
+	{ MODKEY,       XK_minus,       zoom,           {.f = -1} },
+	{ DMODKEY,      XK_U,           zoom,           {.f = +2} },
+	{ DMODKEY,      XK_D,           zoom,           {.f = -2} },
+	{ MODKEY,       XK_l,           externalpipe,   { .v = openurlcmd } },
+	{ MODKEY,       XK_y,           externalpipe,   { .v = copyurlcmd } },
 };
 
 /*
