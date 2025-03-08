@@ -66,3 +66,4 @@ All shortcuts can be found in the manpage.
 - [spoiler](https://st.suckless.org/patches/spoiler/st-spoiler-20180309-c5ba9c0.diff): Use inverted defaultbg/fg for selection when bg/fg are the same.
 - [scrollback](https://st.suckless.org/patches/scrollback/st-scrollback-ringbuffer-0.9.2.diff): Allows you to scrollback in history. No mouse support.
 - [externalpipe](https://st.suckless.org/patches/externalpipe/st-externalpipe-0.8.5.diff): Allows you to pipe the terminalscreen to an external command.
+- [anysize](https://st.suckless.org/patches/anysize/st-anysize-20220718-baa9357.diff): Patch, will remove unsightly gaps between windows
